@@ -1,5 +1,6 @@
 # run_analysis.py
-from baseAnalyzer import analyze_latest_games
+#from baseAnalyzer import analyze_latest_games
+from analyzer import analyze_latest_games
 
 def main():
     username = "bielbart77"
