@@ -30,7 +30,7 @@
 <br>pip install protobuf google
 
 <br>
-<br><b>Important! - <b>run_llm_game_by_id , for instance: python run_llm_game_by_id.py last [username]
+<br><b>Important! - </b>run_llm_game_by_id , for instance: python run_llm_game_by_id.py last [username]
 <br>In my case: python run_llm_game_by_id.py last bielbart77
 
 
