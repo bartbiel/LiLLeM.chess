@@ -83,8 +83,8 @@ def analyze_latest_games(username="bielbart77", max_games=5):
 
     results = []
     for g in games:
-        pgn_text = g.pgn       # <-- POPRAWIONE!
-        game_id = g.game_id    # <-- z Twojego JSON
+        pgn_text = g.pgn       # 
+        game_id = g.game_id    # 
         result = analyzer.analyze_game(pgn_text)
         result.game_id = game_id
         results.append(result)

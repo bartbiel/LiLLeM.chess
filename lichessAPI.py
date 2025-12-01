@@ -54,10 +54,8 @@ class LichessClient:
             raise RuntimeError(f"Lichess API returned status {resp.status_code}: {resp.text[:300]}")
 
         games: List[LichessGame] = []
-        buffer = ""  # tekstowy buffer do składania chunków
+        buffer = ""  
 
-        # iter_content gwarantuje nam odbieranie chunków (mogą zawierać wiele linii
-        # lub fragmenty linii) — z nimi radzimy sobie poniżej
         for chunk in resp.iter_content(chunk_size=8192):
             if not chunk:
                 continue
@@ -65,27 +63,25 @@ class LichessClient:
                 chunk = chunk.decode("utf-8", errors="ignore")
             buffer += chunk
 
-            # rozbijamy na kompletne linie
+
             while "\n" in buffer:
                 line, buffer = buffer.split("\n", 1)
                 text = line.strip()
                 if not text:
                     continue
-                # często Lichess zwraca NDJSON (pojedynczy JSON na linię)
-                # upewniamy się, że linia wygląda jak JSON
                 if not text.startswith("{"):
                     continue
                 try:
                     obj = json.loads(text)
                 except json.JSONDecodeError:
-                    # pominąć niepoprawne linie (mogą to być fragmenty)
+
                     continue
 
                 game_id = obj.get("id", "unknown")
                 pgn = obj.get("pgn", "")
                 games.append(LichessGame(game_id=game_id, pgn=pgn))
 
-        # Po zakończeniu pętli może zostać nieprzetworzony fragment w buffer
+
         tail = buffer.strip()
         if tail and tail.startswith("{"):
             try:
@@ -94,7 +90,7 @@ class LichessClient:
                 pgn = obj.get("pgn", "")
                 games.append(LichessGame(game_id=game_id, pgn=pgn))
             except json.JSONDecodeError:
-                # ignorujemy niekompletny tail
+
                 pass
 
         return games
