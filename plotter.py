@@ -3,6 +3,8 @@ import re
 import matplotlib.pyplot as plt
 
 
+
+
 # ============================================================
 #   HELPERS
 # ============================================================
@@ -112,6 +114,7 @@ def generate_cpl_plots(results):
         plt.close()
 
 
+
 # ============================================================
 #   MAIN ENTRY POINT
 # ============================================================
@@ -126,4 +129,31 @@ def generate_plots(results):
     generate_cpl_plots(results)
     generate_accuracy_plot(results)
     generate_top_blunders(results)
+    if not os.path.exists("plots"):
+        os.makedirs("plots")
+
+    # CPL per game
+    for r in results:
+        safe_id = re.sub(r'[^A-Za-z0-9_-]', '_', r.game_id)
+        filename = f"plots/CPL_{safe_id}.png"
+
+        plt.figure(figsize=(10, 4))
+        plt.plot(r.cpl_list)
+        plt.title(f"CPL – {r.white} vs {r.black}")
+        plt.xlabel("Move Number")
+        plt.ylabel("Centipawn Eval")
+        plt.grid(True)
+        plt.savefig(filename)
+        plt.close()
+
+    # accuracy trend
+    generate_accuracy_plot(results)
+
+    # blunders ranking
+    generate_top_blunders(results)
+
+    # NEW: heatmaps
+    from heatmap_generator import generate_all_heatmaps
+    generate_all_heatmaps(results)
+
 

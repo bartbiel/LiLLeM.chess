@@ -7,7 +7,7 @@ def main():
     username = "bielbart77"
     print(f"Analysing latest games for {username} ...")
 
-    results = analyze_latest_games(username=username, max_games=50, perf_type="bullet")
+    results = analyze_latest_games(username=username, max_games=10, perf_type="rapid")
 
     print("Done. Results:\n")
     for r in results:
